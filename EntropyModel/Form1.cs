@@ -21,8 +21,6 @@ namespace EntropyModel
 
         Bitmap _bitmap = null;
         readonly Random _rnd = new Random();
-        Point _startPoint = new Point();
-
         readonly Timer _timer = new Timer { Enabled = false };
 
         // коллекция стенок
@@ -38,7 +36,7 @@ namespace EntropyModel
         const int cMinWeight = 1;
         const int cTimeInterval = 25;
 
-        Wall _wall = null;
+        ulong _tickCount = 0;
 
         #endregion
 
@@ -60,14 +58,12 @@ namespace EntropyModel
                 g.DrawLine(penWall, (float)wall.X1, (float)wall.Y1, (float)wall.X2, (float)wall.Y2);
             }
 
-            // отрисвока шариков
             foreach (Ball ball in _balls)
             {
                 double R = ball.Radius;
                 SolidBrush bubleBrush = new SolidBrush(ball.Color);
                 g.FillEllipse(bubleBrush, new Rectangle((int)(ball.X - R), (int)(ball.Y - R), (int)(2 * R), (int)(2 * R)));
             }
-
 
             pictureBox1.Image = _bitmap;
         }
@@ -126,5 +122,44 @@ namespace EntropyModel
         }
 
         #endregion
+
+        private void btnStart_Click(object sender, EventArgs e)
+        {
+            if (!_timer.Enabled)
+            {
+                _timer.Interval = cTimeInterval;
+                _timer.Start();
+            }
+        }
+
+        private void btnStop_Click(object sender, EventArgs e)
+        {
+            if (_timer.Enabled)
+            {
+                _timer.Stop();
+            }
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            _bitmap = new Bitmap(pictureBox1.Width, pictureBox1.Height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+            _timer.Tick += Timer_Tick;
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            Tick();
+            Render();
+        }
+
+        private void Form1_Paint(object sender, PaintEventArgs e)
+        {
+            Render();
+        }
     }
 }
