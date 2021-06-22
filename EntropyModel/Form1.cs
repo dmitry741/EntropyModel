@@ -31,9 +31,6 @@ namespace EntropyModel
 
         // константы
         const int cDs = 16;
-        const double cMaxSpeed = 2.5;
-        const int cMinRadius = 9;
-        const int cMinWeight = 1;
         const int cTimeInterval = 25;
 
         #endregion
@@ -81,6 +78,12 @@ namespace EntropyModel
                         Y = _rnd.NextDouble()
                     };
 
+                    if (_rnd.NextDouble() < 0.5)
+                        velocity.X = -velocity.X;
+
+                    if (_rnd.NextDouble() < 0.5)
+                        velocity.Y = -velocity.Y;
+
                     Ball ball = new Ball
                     {
                         Radius = raduis,
@@ -114,6 +117,7 @@ namespace EntropyModel
                 g.DrawLine(penWall, (float)wall.X1, (float)wall.Y1, (float)wall.X2, (float)wall.Y2);
             }
 
+            // отрисова шаров
             foreach (Ball ball in _balls)
             {
                 double R = ball.Radius;
