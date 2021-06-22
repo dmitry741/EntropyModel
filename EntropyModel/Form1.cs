@@ -42,6 +42,24 @@ namespace EntropyModel
 
         #region private methods
 
+        void CreateModel()
+        {
+            AddWalls();
+        }
+
+        void AddWalls()
+        {
+            _walls.Add(new Wall(cDs, cDs, cDs, pictureBox1.Height - cDs));
+            _walls.Add(new Wall(cDs, pictureBox1.Height - cDs, pictureBox1.Width - cDs, pictureBox1.Height - cDs));
+            _walls.Add(new Wall(pictureBox1.Width - cDs, pictureBox1.Height - cDs, pictureBox1.Width - cDs, cDs));
+            _walls.Add(new Wall(pictureBox1.Width - cDs, cDs, cDs, cDs));
+
+            double R = 32;
+
+            _walls.Add(new Wall(pictureBox1.Width / 2, cDs, pictureBox1.Width / 2, (pictureBox1.Height - R) / 2));
+            _walls.Add(new Wall(pictureBox1.Width / 2, pictureBox1.Height - cDs, pictureBox1.Width / 2, (pictureBox1.Height + R) / 2));
+        }
+
         void Render()
         {
             if (_bitmap == null)
@@ -50,7 +68,7 @@ namespace EntropyModel
             Graphics g = Graphics.FromImage(_bitmap);
             g.Clear(Color.White);
 
-            Pen penWall = new Pen(Color.Black, 2.0f);
+            Pen penWall = new Pen(Color.DarkGray, 2.0f);
 
             // отрисовка стен
             foreach (Wall wall in _walls)
@@ -149,6 +167,8 @@ namespace EntropyModel
         {
             _bitmap = new Bitmap(pictureBox1.Width, pictureBox1.Height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
             _timer.Tick += Timer_Tick;
+
+            CreateModel();
         }
 
         private void Timer_Tick(object sender, EventArgs e)
