@@ -19,8 +19,8 @@ namespace EntropyModel
 
         #region members
 
+        Random _rnd = new Random(16);
         Bitmap _bitmap = null;
-        readonly Random _rnd = new Random();
         readonly Timer _timer = new Timer { Enabled = false };
 
         // коллекция стенок
@@ -36,8 +36,6 @@ namespace EntropyModel
         const int cMinWeight = 1;
         const int cTimeInterval = 25;
 
-        ulong _tickCount = 0;
-
         #endregion
 
         #region private methods
@@ -45,6 +43,12 @@ namespace EntropyModel
         void CreateModel()
         {
             AddWalls();
+
+            RectangleF left = new RectangleF(2 * cDs, 2 * cDs, pictureBox1.Width / 2 - 4 * cDs, pictureBox1.Height - 4 * cDs);
+            AddBalls(16, 9, 1, Color.Red, "Red", 1, left);
+
+            RectangleF right = new RectangleF(pictureBox1.Width / 2 + 2 * cDs, 2 * cDs, pictureBox1.Width / 2 - 4 * cDs, pictureBox1.Height - 4 * cDs);
+            AddBalls(16, 9, 1, Color.DarkBlue, "Blue", 2.5, right);
         }
 
         void AddWalls()
@@ -58,6 +62,40 @@ namespace EntropyModel
 
             _walls.Add(new Wall(pictureBox1.Width / 2, cDs, pictureBox1.Width / 2, (pictureBox1.Height - R) / 2));
             _walls.Add(new Wall(pictureBox1.Width / 2, pictureBox1.Height - cDs, pictureBox1.Width / 2, (pictureBox1.Height + R) / 2));
+        }
+
+        void AddBalls(int count, double raduis, double weight, Color color, string label, double maxspeed, RectangleF r)
+        {
+            int n = 0;
+
+            while (n < count)
+            {
+                double x = _rnd.NextDouble() * r.Width + r.X;
+                double y = _rnd.NextDouble() * r.Height + r.Y;
+
+                if (CheckForPlace(Convert.ToInt32(x), Convert.ToInt32(y), raduis))
+                {
+                    Vector velocity = new Vector
+                    {
+                        X = _rnd.NextDouble(),
+                        Y = _rnd.NextDouble()
+                    };
+
+                    Ball ball = new Ball
+                    {
+                        Radius = raduis,
+                        Weight = weight,
+                        Color = color,
+                        Label = label,
+                        Velocity = maxspeed * velocity.Ort,
+                        X = x,
+                        Y = y
+                    };
+
+                    _balls.Add(ball);
+                    n++;
+                }
+            }
         }
 
         void Render()
@@ -80,7 +118,10 @@ namespace EntropyModel
             {
                 double R = ball.Radius;
                 SolidBrush bubleBrush = new SolidBrush(ball.Color);
-                g.FillEllipse(bubleBrush, new Rectangle((int)(ball.X - R), (int)(ball.Y - R), (int)(2 * R), (int)(2 * R)));
+                Pen pen = new Pen(ball.Color);
+                Rectangle rectangle = new Rectangle((int)(ball.X - R), (int)(ball.Y - R), (int)(2 * R), (int)(2 * R));
+                g.FillEllipse(bubleBrush, rectangle);
+                g.DrawEllipse(pen, rectangle);
             }
 
             pictureBox1.Image = _bitmap;
@@ -89,11 +130,10 @@ namespace EntropyModel
         bool CheckForPlace(int X, int Y, double R)
         {
             bool result = true;
-            double D;
 
             foreach (Ball ball in _balls)
             {
-                D = Math.Sqrt((X - ball.X) * (X - ball.X) + (Y - ball.Y) * (Y - ball.Y));
+                double D = Math.Sqrt((X - ball.X) * (X - ball.X) + (Y - ball.Y) * (Y - ball.Y));
 
                 if (D < R + ball.Radius)
                 {
