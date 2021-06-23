@@ -22,6 +22,7 @@ namespace EntropyModel
         Random _rnd = new Random(16);
         Bitmap _bitmap = null;
         readonly Timer _timer = new Timer { Enabled = false };
+        ulong _tickCount = 0;
 
         // коллекция стенок
         readonly List<Wall> _walls = new List<Wall>();
@@ -45,7 +46,7 @@ namespace EntropyModel
             AddBalls(16, 9, 1, Color.Red, "Red", 1, left);
 
             RectangleF right = new RectangleF(pictureBox1.Width / 2 + 2 * cDs, 2 * cDs, pictureBox1.Width / 2 - 4 * cDs, pictureBox1.Height - 4 * cDs);
-            AddBalls(16, 9, 1, Color.DarkBlue, "Blue", 2.5, right);
+            AddBalls(16, 9, 1, Color.DarkBlue, "Blue", 3, right);
         }
 
         void AddWalls()
@@ -55,7 +56,7 @@ namespace EntropyModel
             _walls.Add(new Wall(pictureBox1.Width - cDs, pictureBox1.Height - cDs, pictureBox1.Width - cDs, cDs));
             _walls.Add(new Wall(pictureBox1.Width - cDs, cDs, cDs, cDs));
 
-            double R = 32;
+            double R = 40;
 
             _walls.Add(new Wall(pictureBox1.Width / 2, cDs, pictureBox1.Width / 2, (pictureBox1.Height - R) / 2));
             _walls.Add(new Wall(pictureBox1.Width / 2, pictureBox1.Height - cDs, pictureBox1.Width / 2, (pictureBox1.Height + R) / 2));
@@ -181,6 +182,21 @@ namespace EntropyModel
                     MechanicsSystemSolver.Solve(_balls[i], _balls[j]);
                 }
             }
+
+            if (_tickCount % (1000 / cTimeInterval) == 0) // раз в секунду
+            {
+                int letfRedCount = _balls.Count((b => 0 < b.X && b.X < pictureBox1.Width / 2 && b.Label == "Red"));
+                int leftBlueCount = _balls.Count((b => 0 < b.X && b.X < pictureBox1.Width / 2 && b.Label == "Blue"));
+                int rightRedCount = _balls.Count((b => pictureBox1.Width / 2 < b.X && b.X < pictureBox1.Width && b.Label == "Red"));
+                int rightBlueCount = _balls.Count((b => pictureBox1.Width / 2 < b.X && b.X < pictureBox1.Width && b.Label == "Blue"));
+
+                lblLeftRed.Text = letfRedCount.ToString();
+                lblLeftBlue.Text = leftBlueCount.ToString();
+                lblRightRed.Text = rightRedCount.ToString();
+                lblRightBlue.Text = rightBlueCount.ToString();
+            }
+
+            _tickCount++;
         }
 
         #endregion
