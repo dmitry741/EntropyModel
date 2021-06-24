@@ -59,6 +59,9 @@ namespace EntropyModel
             set { _label = value; }
         }
 
+        public Vector Impuls => Weight * Velocity;
+        public double KinematicEnergy => Weight * Velocity.Length * Velocity.Length / 2;
+
         public void Go()
         {
             _X += _velocity.X;

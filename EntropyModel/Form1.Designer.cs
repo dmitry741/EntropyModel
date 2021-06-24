@@ -40,6 +40,10 @@
             this.lblRightRed = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.lblLeftAverageSpeed = new System.Windows.Forms.Label();
+            this.lblRightAverageSpeed = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -84,7 +88,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 439);
+            this.label2.Location = new System.Drawing.Point(20, 439);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(150, 13);
             this.label2.TabIndex = 4;
@@ -93,7 +97,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 458);
+            this.label1.Location = new System.Drawing.Point(20, 458);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(136, 13);
             this.label1.TabIndex = 5;
@@ -102,7 +106,7 @@
             // lblLeftRed
             // 
             this.lblLeftRed.AutoSize = true;
-            this.lblLeftRed.Location = new System.Drawing.Point(162, 439);
+            this.lblLeftRed.Location = new System.Drawing.Point(170, 439);
             this.lblLeftRed.Name = "lblLeftRed";
             this.lblLeftRed.Size = new System.Drawing.Size(13, 13);
             this.lblLeftRed.TabIndex = 6;
@@ -111,7 +115,7 @@
             // lblLeftBlue
             // 
             this.lblLeftBlue.AutoSize = true;
-            this.lblLeftBlue.Location = new System.Drawing.Point(162, 458);
+            this.lblLeftBlue.Location = new System.Drawing.Point(170, 458);
             this.lblLeftBlue.Name = "lblLeftBlue";
             this.lblLeftBlue.Size = new System.Drawing.Size(13, 13);
             this.lblLeftBlue.TabIndex = 7;
@@ -120,7 +124,7 @@
             // lblRightBlue
             // 
             this.lblRightBlue.AutoSize = true;
-            this.lblRightBlue.Location = new System.Drawing.Point(592, 458);
+            this.lblRightBlue.Location = new System.Drawing.Point(835, 458);
             this.lblRightBlue.Name = "lblRightBlue";
             this.lblRightBlue.Size = new System.Drawing.Size(13, 13);
             this.lblRightBlue.TabIndex = 11;
@@ -129,7 +133,7 @@
             // lblRightRed
             // 
             this.lblRightRed.AutoSize = true;
-            this.lblRightRed.Location = new System.Drawing.Point(592, 439);
+            this.lblRightRed.Location = new System.Drawing.Point(835, 439);
             this.lblRightRed.Name = "lblRightRed";
             this.lblRightRed.Size = new System.Drawing.Size(13, 13);
             this.lblRightRed.TabIndex = 10;
@@ -138,7 +142,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(442, 458);
+            this.label5.Location = new System.Drawing.Point(685, 458);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(136, 13);
             this.label5.TabIndex = 9;
@@ -147,17 +151,57 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(442, 439);
+            this.label6.Location = new System.Drawing.Point(685, 439);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(150, 13);
             this.label6.TabIndex = 8;
             this.label6.Text = "Количество красных шаров:";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(20, 477);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(138, 13);
+            this.label3.TabIndex = 12;
+            this.label3.Text = "Средняя скорость шаров:";
+            // 
+            // lblLeftAverageSpeed
+            // 
+            this.lblLeftAverageSpeed.AutoSize = true;
+            this.lblLeftAverageSpeed.Location = new System.Drawing.Point(170, 477);
+            this.lblLeftAverageSpeed.Name = "lblLeftAverageSpeed";
+            this.lblLeftAverageSpeed.Size = new System.Drawing.Size(13, 13);
+            this.lblLeftAverageSpeed.TabIndex = 13;
+            this.lblLeftAverageSpeed.Text = "0";
+            // 
+            // lblRightAverageSpeed
+            // 
+            this.lblRightAverageSpeed.AutoSize = true;
+            this.lblRightAverageSpeed.Location = new System.Drawing.Point(835, 477);
+            this.lblRightAverageSpeed.Name = "lblRightAverageSpeed";
+            this.lblRightAverageSpeed.Size = new System.Drawing.Size(13, 13);
+            this.lblRightAverageSpeed.TabIndex = 15;
+            this.lblRightAverageSpeed.Text = "0";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(685, 477);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(138, 13);
+            this.label7.TabIndex = 14;
+            this.label7.Text = "Средняя скорость шаров:";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(871, 644);
+            this.Controls.Add(this.lblRightAverageSpeed);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.lblLeftAverageSpeed);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.lblRightBlue);
             this.Controls.Add(this.lblRightRed);
             this.Controls.Add(this.label5);
@@ -196,6 +240,10 @@
         private System.Windows.Forms.Label lblRightRed;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label lblLeftAverageSpeed;
+        private System.Windows.Forms.Label lblRightAverageSpeed;
+        private System.Windows.Forms.Label label7;
     }
 }
 
