@@ -44,6 +44,12 @@
             this.lblLeftAverageSpeed = new System.Windows.Forms.Label();
             this.lblRightAverageSpeed = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
+            this.lblAverageSpeedRed = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.lblAverageSpeedBlue = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.btnPause = new System.Windows.Forms.Button();
+            this.lblTime = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -57,9 +63,9 @@
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(12, 558);
+            this.btnStart.Location = new System.Drawing.Point(12, 508);
             this.btnStart.Name = "btnStart";
-            this.btnStart.Size = new System.Drawing.Size(125, 35);
+            this.btnStart.Size = new System.Drawing.Size(81, 26);
             this.btnStart.TabIndex = 1;
             this.btnStart.Text = "Старт";
             this.btnStart.UseVisualStyleBackColor = true;
@@ -67,9 +73,9 @@
             // 
             // btnStop
             // 
-            this.btnStop.Location = new System.Drawing.Point(12, 599);
+            this.btnStop.Location = new System.Drawing.Point(186, 508);
             this.btnStop.Name = "btnStop";
-            this.btnStop.Size = new System.Drawing.Size(125, 35);
+            this.btnStop.Size = new System.Drawing.Size(81, 26);
             this.btnStop.TabIndex = 2;
             this.btnStop.Text = "Стоп";
             this.btnStop.UseVisualStyleBackColor = true;
@@ -77,9 +83,9 @@
             // 
             // btnClose
             // 
-            this.btnClose.Location = new System.Drawing.Point(734, 508);
+            this.btnClose.Location = new System.Drawing.Point(779, 508);
             this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(125, 35);
+            this.btnClose.Size = new System.Drawing.Size(81, 26);
             this.btnClose.TabIndex = 3;
             this.btnClose.Text = "Выход";
             this.btnClose.UseVisualStyleBackColor = true;
@@ -193,11 +199,73 @@
             this.label7.TabIndex = 14;
             this.label7.Text = "Средняя скорость шаров:";
             // 
+            // lblAverageSpeedRed
+            // 
+            this.lblAverageSpeedRed.AutoSize = true;
+            this.lblAverageSpeedRed.Location = new System.Drawing.Point(524, 439);
+            this.lblAverageSpeedRed.Name = "lblAverageSpeedRed";
+            this.lblAverageSpeedRed.Size = new System.Drawing.Size(13, 13);
+            this.lblAverageSpeedRed.TabIndex = 17;
+            this.lblAverageSpeedRed.Text = "0";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(334, 439);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(184, 13);
+            this.label8.TabIndex = 16;
+            this.label8.Text = "Средняя скорость красных шаров:";
+            // 
+            // lblAverageSpeedBlue
+            // 
+            this.lblAverageSpeedBlue.AutoSize = true;
+            this.lblAverageSpeedBlue.Location = new System.Drawing.Point(524, 457);
+            this.lblAverageSpeedBlue.Name = "lblAverageSpeedBlue";
+            this.lblAverageSpeedBlue.Size = new System.Drawing.Size(13, 13);
+            this.lblAverageSpeedBlue.TabIndex = 19;
+            this.lblAverageSpeedBlue.Text = "0";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(334, 457);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(170, 13);
+            this.label9.TabIndex = 18;
+            this.label9.Text = "Средняя скорость синих шаров:";
+            // 
+            // btnPause
+            // 
+            this.btnPause.Location = new System.Drawing.Point(99, 508);
+            this.btnPause.Name = "btnPause";
+            this.btnPause.Size = new System.Drawing.Size(81, 26);
+            this.btnPause.TabIndex = 20;
+            this.btnPause.Text = "Пауза";
+            this.btnPause.UseVisualStyleBackColor = true;
+            this.btnPause.Click += new System.EventHandler(this.btnPause_Click);
+            // 
+            // lblTime
+            // 
+            this.lblTime.AutoSize = true;
+            this.lblTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblTime.Location = new System.Drawing.Point(407, 508);
+            this.lblTime.Name = "lblTime";
+            this.lblTime.Size = new System.Drawing.Size(56, 16);
+            this.lblTime.TabIndex = 21;
+            this.lblTime.Text = "0.00:00";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(871, 644);
+            this.ClientSize = new System.Drawing.Size(871, 542);
+            this.Controls.Add(this.lblTime);
+            this.Controls.Add(this.btnPause);
+            this.Controls.Add(this.lblAverageSpeedBlue);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.lblAverageSpeedRed);
+            this.Controls.Add(this.label8);
             this.Controls.Add(this.lblRightAverageSpeed);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.lblLeftAverageSpeed);
@@ -244,6 +312,12 @@
         private System.Windows.Forms.Label lblLeftAverageSpeed;
         private System.Windows.Forms.Label lblRightAverageSpeed;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label lblAverageSpeedRed;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label lblAverageSpeedBlue;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Button btnPause;
+        private System.Windows.Forms.Label lblTime;
     }
 }
 

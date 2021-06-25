@@ -19,10 +19,12 @@ namespace EntropyModel
 
         #region members
 
-        Random _rnd = new Random(16);
+        readonly Random _rnd = new Random(16);
         Bitmap _bitmap = null;
         readonly Timer _timer = new Timer { Enabled = false };
         ulong _tickCount = 0;
+        DateTime _startTime;
+        TimeSpan _timeSpan = new TimeSpan(0);
 
         // коллекция стенок
         readonly List<Wall> _walls = new List<Wall>();
@@ -31,38 +33,66 @@ namespace EntropyModel
         readonly List<Ball> _balls = new List<Ball>();
 
         // константы
-        const int cDs = 16;
+        const int cMargin = 16;
         const int cTimeInterval = 25;
 
         #endregion
 
         #region private methods
 
+        void SetInfo()
+        {
+            int letfRedCount = _balls.Count(b => 0 < b.X && b.X < pictureBox1.Width / 2 && b.Label == "Red");
+            int leftBlueCount = _balls.Count(b => 0 < b.X && b.X < pictureBox1.Width / 2 && b.Label == "Blue");
+            int rightRedCount = _balls.Count(b => pictureBox1.Width / 2 < b.X && b.X < pictureBox1.Width && b.Label == "Red");
+            int rightBlueCount = _balls.Count(b => pictureBox1.Width / 2 < b.X && b.X < pictureBox1.Width && b.Label == "Blue");
+
+            double leftAverageSpeed = _balls.Where(b => 0 < b.X && b.X < pictureBox1.Width / 2).Average(b => b.Velocity.Length);
+            double rightAverageSpeed = _balls.Where(b => pictureBox1.Width / 2 < b.X && b.X < pictureBox1.Width).Average(b => b.Velocity.Length);
+
+            double redAverageSpeed = _balls.Where(b => b.Label == "Red").Average(b => b.Velocity.Length);
+            double blueAverageSpeed = _balls.Where(b => b.Label == "Blue").Average(b => b.Velocity.Length);
+
+            lblLeftRed.Text = letfRedCount.ToString();
+            lblLeftBlue.Text = leftBlueCount.ToString();
+            lblRightRed.Text = rightRedCount.ToString();
+            lblRightBlue.Text = rightBlueCount.ToString();
+
+            lblLeftAverageSpeed.Text = Math.Round(leftAverageSpeed, 2).ToString();
+            lblRightAverageSpeed.Text = Math.Round(rightAverageSpeed, 2).ToString();
+            lblAverageSpeedRed.Text = Math.Round(redAverageSpeed, 2).ToString();
+            lblAverageSpeedBlue.Text = Math.Round(blueAverageSpeed, 2).ToString();
+        }
+
         void CreateModel()
         {
+            _walls.Clear();
+            _balls.Clear();
+
             AddWalls();
 
             const int cBallCount = 16;
 
-            RectangleF left = new RectangleF(2 * cDs, 2 * cDs, pictureBox1.Width / 2 - 4 * cDs, pictureBox1.Height - 4 * cDs);
-            AddBalls(cBallCount, 9, 1, Color.Red, "Red", 1.5, left);
+            RectangleF left = new RectangleF(2 * cMargin, 2 * cMargin, pictureBox1.Width / 2 - 4 * cMargin, pictureBox1.Height - 4 * cMargin);
+            AddBalls(cBallCount, 9, 1, Color.Red, "Red", 1.6, left);
 
-            RectangleF right = new RectangleF(pictureBox1.Width / 2 + 2 * cDs, 2 * cDs, pictureBox1.Width / 2 - 4 * cDs, pictureBox1.Height - 4 * cDs);
-            AddBalls(cBallCount, 9, 1, Color.DarkBlue, "Blue", 3, right);
+            RectangleF right = new RectangleF(pictureBox1.Width / 2 + 2 * cMargin, 2 * cMargin, pictureBox1.Width / 2 - 4 * cMargin, pictureBox1.Height - 4 * cMargin);
+            AddBalls(cBallCount, 9, 1, Color.DarkBlue, "Blue", 3.2, right);
         }
 
         void AddWalls()
         {
-            _walls.Add(new Wall(cDs, cDs, cDs, pictureBox1.Height - cDs));
-            _walls.Add(new Wall(cDs, pictureBox1.Height - cDs, pictureBox1.Width - cDs, pictureBox1.Height - cDs));
-            _walls.Add(new Wall(pictureBox1.Width - cDs, pictureBox1.Height - cDs, pictureBox1.Width - cDs, cDs));
-            _walls.Add(new Wall(pictureBox1.Width - cDs, cDs, cDs, cDs));
+            _walls.Add(new Wall(cMargin, cMargin, cMargin, pictureBox1.Height - cMargin));
+            _walls.Add(new Wall(cMargin, pictureBox1.Height - cMargin, pictureBox1.Width - cMargin, pictureBox1.Height - cMargin));
+            _walls.Add(new Wall(pictureBox1.Width - cMargin, pictureBox1.Height - cMargin, pictureBox1.Width - cMargin, cMargin));
+            _walls.Add(new Wall(pictureBox1.Width - cMargin, cMargin, cMargin, cMargin));
 
             double R = 40;
 
-            _walls.Add(new Wall(pictureBox1.Width / 2, cDs, pictureBox1.Width / 2, (pictureBox1.Height - R) / 2));
-            _walls.Add(new Wall(pictureBox1.Width / 2, pictureBox1.Height - cDs, pictureBox1.Width / 2, (pictureBox1.Height + R) / 2));
+            _walls.Add(new Wall(pictureBox1.Width / 2, cMargin, pictureBox1.Width / 2, (pictureBox1.Height - R) / 2));
+            _walls.Add(new Wall(pictureBox1.Width / 2, pictureBox1.Height - cMargin, pictureBox1.Width / 2, (pictureBox1.Height + R) / 2));
 
+            // сплошная стенка
             //_walls.Add(new Wall(pictureBox1.Width / 2, cDs, pictureBox1.Width / 2, pictureBox1.Height - cDs));
         }
 
@@ -144,7 +174,7 @@ namespace EntropyModel
             {
                 double D = Math.Sqrt((X - ball.X) * (X - ball.X) + (Y - ball.Y) * (Y - ball.Y));
 
-                if (D < R + ball.Radius)
+                if (D < R + ball.Radius + 1)
                 {
                     result = false;
                     break;
@@ -189,21 +219,11 @@ namespace EntropyModel
 
             if (_tickCount % (1000 / cTimeInterval) == 0) // раз в секунду
             {
-                int letfRedCount = _balls.Count(b => 0 < b.X && b.X < pictureBox1.Width / 2 && b.Label == "Red");
-                int leftBlueCount = _balls.Count(b => 0 < b.X && b.X < pictureBox1.Width / 2 && b.Label == "Blue");
-                int rightRedCount = _balls.Count(b => pictureBox1.Width / 2 < b.X && b.X < pictureBox1.Width && b.Label == "Red");
-                int rightBlueCount = _balls.Count(b => pictureBox1.Width / 2 < b.X && b.X < pictureBox1.Width && b.Label == "Blue");
+                SetInfo();
 
-                double leftAverageSpeed = _balls.Where(b => 0 < b.X && b.X < pictureBox1.Width / 2).Average(b => b.Velocity.Length);
-                double rightAverageSpeed = _balls.Where(b => pictureBox1.Width / 2 < b.X && b.X < pictureBox1.Width).Average(b => b.Velocity.Length);
-
-                lblLeftRed.Text = letfRedCount.ToString();
-                lblLeftBlue.Text = leftBlueCount.ToString();
-                lblRightRed.Text = rightRedCount.ToString();
-                lblRightBlue.Text = rightBlueCount.ToString();
-
-                lblLeftAverageSpeed.Text = Math.Round(leftAverageSpeed, 2).ToString();
-                lblRightAverageSpeed.Text = Math.Round(rightAverageSpeed, 2).ToString();
+                DateTime curDateTime = DateTime.Now;
+                _timeSpan = curDateTime - _startTime;
+                lblTime.Text = string.Format("{0}.{1}:{2}", _timeSpan.Hours, _timeSpan.Minutes.ToString("00"), _timeSpan.Seconds.ToString("00"));
             }
 
             _tickCount++;
@@ -215,8 +235,17 @@ namespace EntropyModel
         {
             if (!_timer.Enabled)
             {
+                _startTime = DateTime.Now - _timeSpan;
                 _timer.Interval = cTimeInterval;
                 _timer.Start();
+            }
+        }
+
+        private void btnPause_Click(object sender, EventArgs e)
+        {
+            if (_timer.Enabled)
+            {
+                _timer.Stop();
             }
         }
 
@@ -226,6 +255,12 @@ namespace EntropyModel
             {
                 _timer.Stop();
             }
+
+            CreateModel();
+            SetInfo();
+            _timeSpan = new TimeSpan(0);
+            lblTime.Text = "0.00:00";
+            Render();
         }
 
         private void btnClose_Click(object sender, EventArgs e)
