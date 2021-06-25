@@ -33,6 +33,11 @@ namespace EntropyModel
             get { return _Y; }
             set { _Y = value; }
         }
+
+        public override string ToString()
+        {
+            return string.Format("X={0}, Y={1}", X, Y);
+        }
     }
 
     class Vector : Point

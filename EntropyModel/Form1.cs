@@ -91,9 +91,6 @@ namespace EntropyModel
 
             _walls.Add(new Wall(pictureBox1.Width / 2, cMargin, pictureBox1.Width / 2, (pictureBox1.Height - R) / 2));
             _walls.Add(new Wall(pictureBox1.Width / 2, pictureBox1.Height - cMargin, pictureBox1.Width / 2, (pictureBox1.Height + R) / 2));
-
-            // сплошная стенка
-            //_walls.Add(new Wall(pictureBox1.Width / 2, cDs, pictureBox1.Width / 2, pictureBox1.Height - cDs));
         }
 
         void AddBalls(int count, double raduis, double weight, Color color, string label, double maxspeed, RectangleF r)
@@ -220,7 +217,10 @@ namespace EntropyModel
             if (_tickCount % (1000 / cTimeInterval) == 0) // раз в секунду
             {
                 SetInfo();
+            }
 
+            if (_tickCount % (200 / cTimeInterval) == 0) // 5 раз в секунду
+            {
                 DateTime curDateTime = DateTime.Now;
                 _timeSpan = curDateTime - _startTime;
                 lblTime.Text = string.Format("{0}.{1}:{2}", _timeSpan.Hours, _timeSpan.Minutes.ToString("00"), _timeSpan.Seconds.ToString("00"));
